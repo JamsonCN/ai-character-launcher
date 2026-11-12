@@ -1,5 +1,7 @@
 # AI 角色启动器
 
+[**下载 Windows 版（安装包 EXE / 免安装 ZIP）**](https://github.com/JamsonCN/ai-character-launcher/releases/latest)
+
 把常用的 AI 做成一个游戏选角界面。点选 ChatGPT、Claude、DeepSeek、Kimi 或 GLM，就能打开对应的网页版或本机客户端。
 
 ## 为什么做这个小软件
@@ -32,7 +34,7 @@ npm ci
 npm start
 ```
 
-在 Windows x64 上运行 `npm run pack:win` 可生成安装 EXE 和免安装 ZIP。源码包含原创合成配乐与界面音效，可离线播放。声音设置截图取自本地验收版，其中显示的试用 MP3 存于本机。
+在 Windows x64 上运行 `npm run pack:win` 可生成安装 EXE 和免安装 ZIP。公开版包含原创合成配乐《幻彩序曲》与界面音效，可离线播放。
 
 ## 图片署名
 

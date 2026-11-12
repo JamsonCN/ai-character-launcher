@@ -1,0 +1,16 @@
+{
+  "name": "ai-character-launcher",
+  "version": "0.1.0",
+  "private": true,
+  "description": "通过舞台选角打开常用的 AI 网页与客户端。",
+  "main": "src/main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "pack:win": "electron-builder --win --x64 --publish never",
+    "pack:win:trial": "electron-builder --config electron-builder.trial.yml --win --x64 --publish never"
+  },
+  "devDependencies": {
+    "electron": "45.3.0",
+    "electron-builder": "26.18.0"
+  }
+}

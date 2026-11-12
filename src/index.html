@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' launcher-image: data:; connect-src 'self' launcher-audio:; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>AI 角色启动器</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="portrait.js" defer></script>
+  <script src="claude-arm.js" defer></script>
+  <script src="gallery-art.js" defer></script>
+  <script src="stage-audio.js" defer></script>
+  <script src="renderer.js" defer></script>
+  <script src="settings.js" defer></script>
+  <script src="sound-settings.js" defer></script>
+</head>
+<body>
+  <header class="titlebar">
+    <span class="brand-mark" aria-hidden="true">✦</span>
+    <span>AI 角色启动器</span>
+    <div class="title-controls">
+      <button id="show-statement" type="button" title="声明" aria-label="声明"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="5" y="3" width="11" height="14" rx="1.5"/><path d="M3 6h4m-4 4h4m-4 4h4m2-7h4m-4 3h4m-4 3h4"/></svg></button>
+      <button id="show-settings" type="button" title="设置" aria-label="设置"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="2.6"/><path d="M8.5 3h3l.6 2.1 1.4.8 2.1-.5 1.5 2.6-1.5 1.6v1.6l1.5 1.6-1.5 2.6-2.1-.5-1.4.8-.6 2.1h-3l-.6-2.1-1.4-.8-2.1.5L2.9 13l1.5-1.6V9.8L2.9 8.2l1.5-2.6 2.1.5 1.4-.8z"/></svg></button>
+      <button type="button" data-window-action="minimize" title="最小化" aria-label="最小化"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10h10"/></svg></button>
+      <button id="maximize" type="button" data-window-action="maximize" title="最大化" aria-label="最大化"><svg class="maximize-icon" viewBox="0 0 20 20" aria-hidden="true"><rect x="5" y="5" width="10" height="10" rx="1"/></svg><svg class="restore-icon" viewBox="0 0 20 20" aria-hidden="true"><rect x="4" y="7" width="9" height="9" rx="1"/><path d="M7 5V4h9v9h-1"/></svg></button>
+      <button type="button" data-window-action="close" title="关闭" aria-label="关闭"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6 6 8 8m0-8-8 8"/></svg></button>
+    </div>
+  </header>
+  <main>
+    <section class="gallery" id="gallery" aria-labelledby="gallery-title">
+      <div class="gallery-heading">
+        <h1 id="gallery-title">请选择你的 AI</h1>
+      </div>
+      <div class="stage-frame">
+        <div class="stage" id="stage"></div>
+      </div>
+      <div class="gallery-footer">
+        <span>点击角色，打开专属入口</span>
+        <span class="keys"><kbd>1</kbd>–<kbd>5</kbd> 选角 <kbd>Tab</kbd> 切换 <kbd>Enter</kbd> 进入</span>
+      </div>
+    </section>
+    <section class="detail" id="detail" aria-labelledby="character-name" hidden>
+      <div class="detail-top">
+        <button class="back" id="back" type="button"><span aria-hidden="true">←</span> 返回选角</button>
+      </div>
+      <div class="detail-grid">
+        <figure class="portrait-stage">
+          <div class="portrait-rig" id="portrait" role="img">
+            <div class="portrait-motion" aria-hidden="true">
+              <img class="portrait-tail" id="portrait-tail" alt="" hidden>
+              <img class="portrait-body" id="portrait-body" alt="" hidden>
+              <canvas id="portrait-flat" hidden></canvas>
+              <canvas id="claude-arm" hidden></canvas>
+              <img class="portrait-accessory" id="portrait-accessory" alt="" hidden>
+            </div>
+          </div>
+        </figure>
+        <div class="launch-panel">
+          <p id="character-description"></p>
+          <h1 id="character-name"></h1>
+          <div class="launch-actions">
+            <button class="action action-web" id="open-web" type="button">
+              <span>打开网页版</span>
+              <span aria-hidden="true">↗</span>
+            </button>
+            <button class="action action-client" id="open-client" type="button" aria-describedby="client-status" disabled>
+              <span>启动客户端</span>
+            </button>
+            <div class="client-notice"><p id="client-status" class="client-status"></p><button id="client-settings" class="text-button" type="button">设置客户端</button></div>
+            <div class="voice-controls">
+              <button id="play-voice" class="small-button" type="button" aria-describedby="voice-status" disabled>试听语音</button>
+              <span id="voice-status" class="status" role="status"></span>
+            </div>
+          </div>
+          <p class="status" id="launch-status" role="status"></p>
+          <button id="launch-settings" class="text-button" type="button" hidden>打开相关设置</button>
+        </div>
+      </div>
+    </section>
+    <section id="settings" class="settings" aria-labelledby="settings-heading" hidden>
+      <header class="settings-heading">
+        <h1 id="settings-heading" tabindex="-1">设置</h1>
+        <nav class="settings-tabs" aria-label="设置分类">
+          <button class="settings-tab" type="button" data-section="general" aria-pressed="true">常规</button>
+          <button class="settings-tab" type="button" data-section="roles" aria-pressed="false">角色与入口</button>
+          <button class="settings-tab" type="button" data-section="sound" aria-pressed="false">声音</button>
+        </nav>
+      </header>
+      <div class="settings-content">
+        <div id="general-settings" class="settings-card">
+          <div class="setting-row"><label for="auto-start">登录 Windows 时自动启动</label><input id="auto-start" type="checkbox"></div>
+          <div class="setting-row"><label for="remember-window">记住窗口大小和位置</label><input id="remember-window" type="checkbox"></div>
+          <div class="setting-row"><label for="motion">减少动效</label><select id="motion"><option value="system">跟随系统</option><option value="reduce">减少动效</option></select></div>
+          <div class="setting-row">
+            <label for="browser-mode">打开网页的浏览器</label>
+            <select id="browser-mode"><option value="system">Windows 默认浏览器</option><option value="custom">指定浏览器</option></select>
+          </div>
+          <div id="browser-picker" class="setting-row" hidden>
+            <label for="browser-path">浏览器程序</label>
+            <div class="input-action"><input id="browser-path" type="text" placeholder="浏览器的 .exe 路径"><button class="small-button" type="button" id="pick-browser">浏览…</button></div>
+          </div>
+          <div class="setting-row"><label for="after-web">打开网页版后</label><select id="after-web"><option value="keep">保持窗口</option><option value="minimize">最小化到任务栏</option><option value="quit">退出启动器</option></select></div>
+          <div class="setting-row"><label for="after-client">启动客户端后</label><select id="after-client"><option value="keep">保持窗口</option><option value="minimize">最小化到任务栏</option><option value="quit">退出启动器</option></select></div>
+        </div>
+        <div id="role-settings" class="role-settings" hidden>
+          <aside class="settings-card role-sidebar">
+            <div class="role-list" id="role-list" aria-label="角色顺序"></div>
+            <div class="order-actions"><button id="move-up" class="small-button" type="button">↑ 上移</button><button id="move-down" class="small-button" type="button">↓ 下移</button></div>
+          </aside>
+          <div class="settings-card role-editor">
+            <div class="setting-row"><label for="role-name">AI 名称</label><input id="role-name" type="text" maxlength="40"></div>
+            <div class="setting-row"><label for="role-color">主题色</label><input id="role-color" type="color"></div>
+            <div class="setting-row">
+              <label for="role-website">网页地址</label>
+              <div class="input-action"><input id="role-website" type="text" inputmode="url" placeholder="https://…"><button id="test-web" class="small-button" type="button">测试打开</button></div>
+            </div>
+            <div class="setting-row">
+              <label for="role-client">客户端路径</label>
+              <div class="input-action path-controls"><input id="role-client" type="text" placeholder="应用程序 .exe 或快捷方式 .lnk"><button id="pick-client" class="small-button" type="button">浏览…</button><button id="test-client" class="small-button" type="button">测试启动</button></div>
+            </div>
+            <div class="setting-row">
+              <span>角色图</span>
+              <div class="image-field"><span id="role-image-name"></span><button id="pick-image" class="small-button" type="button">更换图片</button><button id="reset-image" class="text-button" type="button">使用原图</button></div>
+            </div>
+          </div>
+        </div>
+        <div id="sound-settings" class="sound-settings" hidden></div>
+      </div>
+      <footer class="settings-footer">
+        <p id="settings-message" class="status" role="status"></p>
+        <div class="settings-footer-buttons">
+          <button id="reset-settings" class="text-button" type="button">恢复默认设置</button>
+          <div><button id="cancel-settings" class="small-button" type="button">取消</button><button id="save-settings" class="small-button primary-button" type="button">保存</button></div>
+        </div>
+      </footer>
+    </section>
+  </main>
+  <dialog id="statement" aria-labelledby="statement-title">
+    <div class="statement-header">
+      <div><h2 id="statement-title">AI 角色启动器</h2><p id="app-version"></p></div>
+      <button id="close-statement" class="small-button" type="button" autofocus>关闭</button>
+    </div>
+    <h3>图片署名</h3>
+    <p class="credit">原图来源：ZipZipPipe。应用中的角色图由本人基于原图进行二次创作。</p>
+    <div class="release-links" id="release-links" hidden>
+      <button class="text-button" type="button" data-link="project" hidden>GitHub 项目主页</button>
+      <button class="text-button" type="button" data-link="downloads" hidden>下载最新版本</button>
+    </div>
+    <p id="statement-status" class="status" role="status"></p>
+  </dialog>
+</body>
+</html>

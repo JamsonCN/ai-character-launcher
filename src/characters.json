@@ -1,0 +1,58 @@
+[
+  {
+    "id": "chatgpt",
+    "name": "ChatGPT",
+    "character": "银发紫色龙娘",
+    "website": "https://chatgpt.com/",
+    "portrait": "chatgpt-v2.png",
+    "layers": {
+      "body": "chatgpt-body.png",
+      "tail": "chatgpt-tail.png"
+    },
+    "accent": "#d7b7ff"
+  },
+  {
+    "id": "claude",
+    "name": "Claude",
+    "character": "太阳花少女",
+    "website": "https://claude.ai/",
+    "portrait": "claude-v2.png",
+    "accent": "#ffc099"
+  },
+  {
+    "id": "deepseek",
+    "name": "DeepSeek",
+    "character": "蓝发鲸鱼少女",
+    "website": "https://chat.deepseek.com/",
+    "portrait": "deepseek-v2.png",
+    "layers": {
+      "body": "deepseek-body.png",
+      "tail": "deepseek-tail.png"
+    },
+    "accent": "#a0c7ff"
+  },
+  {
+    "id": "kimi",
+    "name": "Kimi",
+    "character": "银紫发长笛少女",
+    "website": "https://www.kimi.com/",
+    "portrait": "kimi-v2.png",
+    "layers": {
+      "body": "kimi-body.png",
+      "accessory": "kimi-tag.png"
+    },
+    "accent": "#b9b8ff"
+  },
+  {
+    "id": "glm",
+    "name": "GLM",
+    "character": "黑发兽耳少女",
+    "website": "https://chat.z.ai/",
+    "portrait": "glm-v2.png",
+    "layers": {
+      "body": "glm-body.png",
+      "tail": "glm-tail.png"
+    },
+    "accent": "#e9b6ef"
+  }
+]

@@ -1,0 +1,22 @@
+appId: com.aicharacter.launcher
+productName: AI 角色启动器
+directories:
+  output: dist
+files:
+  - src/**/*
+win:
+  executableName: AI Character Launcher
+  artifactName: AI-Character-Launcher-${version}-win-${arch}.${ext}
+  target:
+    - target: nsis
+      arch: [x64]
+    - target: zip
+      arch: [x64]
+nsis:
+  artifactName: AI-Character-Launcher-${version}-win-${arch}-setup.${ext}
+  oneClick: true
+  perMachine: false
+  createStartMenuShortcut: true
+  createDesktopShortcut: false
+  shortcutName: AI 角色启动器
+  deleteAppDataOnUninstall: false

@@ -1,0 +1,10 @@
+extends: ./electron-builder.yml
+directories:
+  output: dist/trial
+extraResources:
+  - from: local-audio
+    to: trial-audio
+    filter:
+      - Champion_s_Gambit.mp3
+      - juniorsoundays-ui-sound-54-527832.mp3
+      - juniorsoundays-ui-sound-90-527846.mp3

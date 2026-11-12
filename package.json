@@ -1,6 +1,6 @@
 {
   "name": "ai-character-launcher",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "通过舞台选角打开常用的 AI 网页与客户端。",
   "main": "src/main.cjs",

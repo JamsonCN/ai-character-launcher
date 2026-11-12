@@ -34,7 +34,9 @@ npm ci
 npm start
 ```
 
-在 Windows x64 上运行 `npm run pack:win` 可生成安装 EXE 和免安装 ZIP。公开版包含原创合成配乐《幻彩序曲》与界面音效，可离线播放。
+在 Windows x64 上运行 `npm run pack:win` 可生成安装 EXE 和免安装 ZIP。直接用仓库源码构建时，应用使用源码自带的合成配乐《幻彩序曲》和界面音效。
+
+GitHub Releases 提供的 **v0.1.1** 成品默认播放《Champion’s Gambit》。滑过角色卡使用 Juniorsoundays 的 `UI Sound 54`，进入详情和返回选角使用 `UI Sound 90`。这些音频随应用使用，可以离线播放。
 
 ## 图片署名
 
